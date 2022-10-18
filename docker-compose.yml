@@ -1,9 +1,10 @@
 version: '3'
 services:
   smtp:
-    image: namshi/smtp
-    container_name: smtp_relay
-    restart: always
+    container_name: smtp
+    hostname: SMTP
+    image: w3kllc/smtp:latest
+    restart: unless-stopped
     ports:
      - "25:25"
     environment:
@@ -32,4 +33,14 @@ services:
      # - SMARTHOST_USER=
      # - SMARTHOST_PASSWORD=
      # - SMARTHOST_ALIASES=
-
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+    extra_hosts:
+      - "server.w3k:host-gateway"
+    networks:
+      w3K:
+        ipv4_address: 10.1.1.109
+ 
+networks:
+    w3K:
+      external: true
